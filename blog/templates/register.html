@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+
+            <div class="card">
+                <form method="post" action="{% url 'register' %}" class="box">
+                    {% if messages %}
+                        <ul style="color:red;">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% csrf_token %}
+                    <h1>Register</h1>
+
+                    <input type="text" name="first_name" placeholder="First Name">
+                    <input type="text" name="last_name" placeholder="Last Name">
+
+                    <input type="text" name="username" placeholder="Username">
+                    <input type="text" name="email" placeholder="Email">
+
+                    <input type="password" name="password" placeholder="Password">
+                    <input type="text" name="confirm_password" placeholder="Confirm Password">
+                    <input type="submit"  value="Sign Up">
+                    <a class="forgot text-muted" href="{% url 'login' %}">SignIn</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
