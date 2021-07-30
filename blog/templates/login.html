@@ -7,7 +7,13 @@
                 <form method="post" action="{% url 'login' %}" class="box">
                     {% csrf_token %}
                     <h1>Login</h1>
-                    <p class="text-muted"> Please enter your login and password!</p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <span style="color:red;">{{ message }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted"> Please enter your login and password!</p>
+                    {% endif %}
                     <input type="text" name="username" placeholder="Username">
                     <input type="password" name="password" placeholder="Password">
                     <a class="forgot text-muted" href="#">Forgot password?</a>
