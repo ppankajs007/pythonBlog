@@ -24,13 +24,6 @@ def login(request):
     else:
         return render(request,'login.html')
 
-def profile(request):
-    if request.user.is_authenticated:
-        return render(request,'profile.html')
-    else:
-        return redirect('login')
-
-
 def logout(request):
     userLogout(request)
     return redirect('/')
@@ -69,3 +62,29 @@ def register(request):
                     return redirect('profile')
         else:
             return render(request, 'register.html')
+
+def profile(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            user_id = request.user.id
+            phone_number = request.POST.get('phone_number')
+            profileImage = request.POST.get('profileImage')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            address = request.POST.get('address')
+            country = request.POST.get('country')
+            state = request.POST.get('state')
+            if UserProfile.objects.filter(phone_number=phone_number).exists():
+                messages.warning(request, 'Phone No. already exist')
+                return redirect('profile')
+            else:
+                userUpdate = user.objects.get(pk=id)
+                userUpdate.first_name = first_name
+                userUpdate.last_name = last_name
+                userUpdate.save()
+                messages.warning(request, 'Profile update successfuly')
+                return redirect('profile')
+        else:
+            return render(request,'profile.html')
+    else:
+        return redirect('login')
