@@ -6,47 +6,55 @@
           {% csrf_token %}
         <div class="row">
             <div class="col-md-3 border-right">
+                {{ data.profile_image }}
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <label for="profileImage">
-                        <input type="file" name="profileImage" id="profileImage" style="width:0;" />
-                        <img class="rounded-circle mt-5" src="{% static 'assets/img/user.png' %}">
+                        <input type="file" name="profile_image" id="profileImage" style="width:0;" />
+                        {% if data.profile_image %}
+                            <img class="rounded-circle mt-5" src="{{ BASIC_DIR }}/{{ data.profile_image }}">
+                        {% else %}
+                            <img class="rounded-circle mt-5" src="{% static 'assets/img/user.png' %}">
+                        {% endif %}
                     </label>
                     <span class="font-weight-bold">{{ user.email }}</span>
                 </div>
             </div>
             <div class="col-md-5 border-right">
                 <div class="p-3 py-5">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-center">Profile Settings</h4>
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <label class="labels">Name</label>
-                            <input type="text" class="form-control" placeholder="first name" value="{{ user.first_name }}">
+                            <input type="text" class="form-control" name="first_name" placeholder="first name" value="{{ user.first_name }}">
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Surname</label>
-                            <input type="text" class="form-control" value="{{ user.last_name }}" placeholder="surname">
+                            <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" placeholder="surname">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">PhoneNumber</label>
-                            <input type="text" class="form-control" placeholder="enter phone number" value="">
+                            <input type="text" class="form-control" name="phone_number" placeholder="enter phone number" value="{{ data.phone_number }}">
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Address</label>
-                            <input type="text" class="form-control" placeholder="enter address" value="">
+                            <input type="text" class="form-control" name="address" placeholder="enter address" value="{{ data.address }}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label class="labels">Country</label>
-                            <input type="text" class="form-control" placeholder="country" value="">
+                            <input type="text" class="form-control" placeholder="country" name="country" value="{{ data.country }}">
                         </div>
                         <div class="col-md-6">
                             <label class="labels">State/Region</label>
-                            <input type="text" class="form-control" value="" placeholder="state">
+                            <input type="text" class="form-control" value="{{ data.state }}" placeholder="state" name="state">
                         </div>
                     </div>
                     <div class="mt-5 text-center" style="margin:20px;">

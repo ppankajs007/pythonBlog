@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login as userLogin,logout as userLogout
+from .models import UserDetails
 # Create your views here.
 
 def index(request):
@@ -63,28 +64,42 @@ def register(request):
         else:
             return render(request, 'register.html')
 
+
+
 def profile(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            user_id = request.user.id
             phone_number = request.POST.get('phone_number')
-            profileImage = request.POST.get('profileImage')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             address = request.POST.get('address')
             country = request.POST.get('country')
             state = request.POST.get('state')
-            if UserProfile.objects.filter(phone_number=phone_number).exists():
-                messages.warning(request, 'Phone No. already exist')
-                return redirect('profile')
-            else:
-                userUpdate = user.objects.get(pk=id)
-                userUpdate.first_name = first_name
-                userUpdate.last_name = last_name
-                userUpdate.save()
-                messages.warning(request, 'Profile update successfuly')
-                return redirect('profile')
+
+            userProfileData = UserDetails.objects.get(user_id=request.user.id)
+
+            if userProfileData.phone_number != phone_number:
+                if UserDetails.objects.filter(phone_number=phone_number).exists():
+                    messages.warning(request, 'Phone number is exist')
+                    return redirect('profile')
+            userUpdate = User.objects.get(id=request.user.id)
+            userUpdate.first_name = first_name
+            userUpdate.last_name = last_name
+            userUpdate.save()
+            userProfileData = UserDetails.objects.get(user_id=request.user.id)
+            userProfileData.phone_number = phone_number
+            userProfileData.address = address
+            userProfileData.country = country
+            userProfileData.state = state
+            userProfileData.save()
+            if request.FILES:
+                userProfileData.profile_image = request.FILES['profile_image']
+                userProfileData.save()
+            messages.warning(request, 'Profile update successfuly')
+            return redirect('profile')
         else:
-            return render(request,'profile.html')
+            details = {}
+            details['data'] = UserDetails.objects.get(user_id=request.user.id)
+            return render(request,'profile.html',details)
     else:
         return redirect('login')
