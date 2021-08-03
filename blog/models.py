@@ -8,6 +8,6 @@ class UserDetails(models.Model):
     address = models.TextField()
     country = models.CharField(max_length=100,null=True)
     state = models.CharField(max_length=100,null=True)
-    profile_image = models.ImageField(upload_to='a/img')
+    profile_image = models.ImageField(upload_to='static/profile')
     create_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)

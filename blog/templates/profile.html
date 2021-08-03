@@ -6,12 +6,13 @@
           {% csrf_token %}
         <div class="row">
             <div class="col-md-3 border-right">
-                {{ data.profile_image }}
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <label for="profileImage">
                         <input type="file" name="profile_image" id="profileImage" style="width:0;" />
                         {% if data.profile_image %}
-                            <img class="rounded-circle mt-5" src="{{ BASIC_DIR }}/{{ data.profile_image }}">
+                            <!-- <a target="_blank" href="{{ BASE_DIR }}/{{ data.profile_image }}">  -->
+                                <img class="rounded-circle mt-5" src="{{ BASE_DIR }}/{{ data.profile_image }}">
+                            <!-- </a> -->
                         {% else %}
                             <img class="rounded-circle mt-5" src="{% static 'assets/img/user.png' %}">
                         {% endif %}

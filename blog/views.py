@@ -21,15 +21,13 @@ def login(request):
                 return redirect('profile')
             else:
                 messages.warning(request,'Username and password is wrong')
-                return redirect('register')
+                return redirect('login')
     else:
         return render(request,'login.html')
 
 def logout(request):
     userLogout(request)
     return redirect('/')
-
-
 
 def register(request):
         if request.method == 'POST':
@@ -103,3 +101,6 @@ def profile(request):
             return render(request,'profile.html',details)
     else:
         return redirect('login')
+
+def userPost(request):
+    return render(request,'user_post.html')
