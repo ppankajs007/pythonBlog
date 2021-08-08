@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login as userLogin,logout as userLogout
-from .models import UserDetails
+from .models import UserDetails,Post
 # Create your views here.
 
 def index(request):
@@ -103,4 +103,17 @@ def profile(request):
         return redirect('login')
 
 def userPost(request):
-    return render(request,'user_post.html')
+    if request.method == 'POST':
+        user_id = request.user.id
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        post_image = ""
+        if request.FILES:
+            post_image = request.FILES['post_image']
+        Post.objects.create(user_id=user_id,title=title,description=description,post_image=post_image)
+        messages.success(request,'Post insert successfuly')
+        return redirect('post')
+    else:
+        userDataPost = {}
+        userDataPost['data'] = Post.objects.get(user_id=request.user.id)
+        return render(request,'user_post.html',userDataPost)

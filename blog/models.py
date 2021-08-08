@@ -11,3 +11,11 @@ class UserDetails(models.Model):
     profile_image = models.ImageField(upload_to='static/profile')
     create_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
+
+class Post(models.Model):
+    user = models.ForeignKey(to=User,on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    post_image  = models.ImageField(upload_to='static/posts',null=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
