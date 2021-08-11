@@ -25,7 +25,49 @@
 					<button class="btn btn-success">Post</button>
 				</div>
 			</form>
+
 		</div>
+		<div class="col-md-8">
+			{% for value in userPosts %}
+				<div class="row">
+					<div class="col-lg-8 col-lg-offset-2">
+						<p>
+							<img src="{{ BASE_DIR }}/{{ userProfile.profile_image }}" width="50px" height="50px">
+						</p>
+						<p>{{ value.create_date }}</p>
+						<h4>{{ value.title }}</h4>
+						<p><img class="img-responsive" src="{{ BASE_DIR }}/{{ value.post_image }}" alt=""></p>
+						<p>{{ value.description }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-12">
+			<center>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						{% if userPosts.has_previous %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ userPosts.previous_page_number }}" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+									<span class="sr-only">Previous</span>
+								</a>
+							</li>
+						{% endif %}
+						{% for i in userPosts.paginator.page_range %}
+							<li class="page-item"><a class="page-link {% if request.GET.page == i %} active {% endif %}"   href="?page={{ i }}">{{ i }}</a></li>
+						{% endfor %}
+						{% if userPosts.has_next %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ userPosts.next_page_number }}" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+									<span class="sr-only">Next</span>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				</nav>
+			</center>
 		</div>
 	</div>
 </div>

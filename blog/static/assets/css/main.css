@@ -417,3 +417,8 @@ a.socialIcon:hover,
     cursor: pointer;
     border: solid 1px #BA68C8
 }
+
+.active{
+    background:#c8ecda;
+    color:black;
+}

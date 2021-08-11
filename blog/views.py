@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login as userLogin,logout as userLogout
 from .models import UserDetails,Post
+from django.core.paginator import Paginator
 # Create your views here.
 
 def index(request):
@@ -114,6 +115,12 @@ def userPost(request):
         messages.success(request,'Post insert successfuly')
         return redirect('post')
     else:
-        userDataPost = {}
-        userDataPost['data'] = Post.objects.get(user_id=request.user.id)
-        return render(request,'user_post.html',userDataPost)
+        userPost = Post.objects.filter(user_id=request.user.id).order_by('-create_date')
+        userProfile = UserDetails.objects.get(user_id=request.user.id)
+        paginator = Paginator(userPost,1)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request,'user_post.html',{
+                        'userPosts':page_obj,
+                        'userProfile':userProfile
+                    })
